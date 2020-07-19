@@ -21,3 +21,42 @@ class ScaleUtil {
         return Math.sin(scale * Math.PI)
     }
 }
+
+class DrawingUtil {
+
+    static drawLine(context : CanvasRenderingContext2D, x1 : number, y1 : number, x2 : number, y2 : number) {
+        context.beginPath()
+        context.moveTo(x1, y1)
+        context.lineTo(x2, y2)
+        context.stroke()
+    }
+
+    static drawBlockToLine(context : CanvasRenderingContext2D, i : number, scale : number) {
+        const sf : number = ScaleUtil.sinify(scale)
+        const sf1 : number = ScaleUtil.divideScale(sf, 0, parts)
+        const sf2 : number = ScaleUtil.divideScale(sf, 1, parts)
+        const sf3 : number = ScaleUtil.divideScale(sf, 2, parts)
+        const size : number = Math.min(w, h) / sizeFactor
+        context.save()
+        context.scale(1 - 2 * i, 1)
+        context.save()
+        context.translate(-(w  / 2 - size) * sf2, 0)
+        context.fillRect(-size * sf1, -size / 2, size * sf1, size)
+        context.restore()
+        DrawingUtil.drawLine(context, -w / 2, -h * 0.5 * sf3, -w / 2, h * 0.5 * sf3)
+        context.restore()
+    }
+
+    static drawBTLNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.lineCap = 'round'
+        context.lineWidth = Math.min(w, h) / strokeFactor
+        context.strokeStyle = colors[i]
+        context.fillStyle = colors[i]
+        for (var k = 0; k < 2; k++) {
+            context.save()
+            context.translate(w / 2, h / 2)
+            DrawingUtil.drawBlockToLine(context, k, scale)
+            context.restore()
+        }
+    }
+}
