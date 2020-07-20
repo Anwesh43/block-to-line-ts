@@ -200,3 +200,25 @@ class BlockToLine {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    btl : BlockToLine = new BlockToLine()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.btl.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.btl.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.btl.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
