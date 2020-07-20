@@ -152,7 +152,7 @@ class BTLNode {
 
     addNeighbor() {
         if (this.i < colors.length - 1) {
-            this.next = new BTLNode(this.i)
+            this.next = new BTLNode(this.i + 1)
             this.next.prev = this
         }
     }
